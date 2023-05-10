@@ -1,4 +1,4 @@
-package club.someoneice.scriptblock.block.api;
+package club.someoneice.scriptblock.api;
 
 import java.util.List;
 

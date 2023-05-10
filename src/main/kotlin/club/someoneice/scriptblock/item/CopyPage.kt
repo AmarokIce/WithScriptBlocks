@@ -20,11 +20,12 @@ class CopyPage : Item() {
         val tile = world.getTileEntity(x, y, z)
         if (tile is ScriptBlockTile) {
             item.stackSize -= 1
-            val items = ItemStack(ScriptBlockMain.RecordingPage)
-            items.stackTagCompound.setString("command", tile.command)
-            player.inventory.addItemStackToInventory(items)
+            // TODO - Item
+            // val items = ItemStack(ScriptBlockMain.RecordingPage)
+            // items.stackTagCompound.setString("command", tile.command)
+            // player.inventory.addItemStackToInventory(items)
         }
 
-        return true;
+        return true
     }
 }

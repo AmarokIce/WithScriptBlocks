@@ -1,7 +1,6 @@
 package club.someoneice.scriptblock
 
 import club.someoneice.scriptblock.item.RecordingPage
-import club.someoneice.scriptblock.util.readFromJson
 import net.minecraft.command.CommandBase
 import net.minecraft.command.ICommandSender
 import net.minecraft.entity.player.EntityPlayer

@@ -1,6 +1,6 @@
-package club.someoneice.scriptblock.block;
+package club.someoneice.scriptblock;
 
-import club.someoneice.scriptblock.block.api.ISBList;
+import club.someoneice.scriptblock.api.ISBList;
 import com.google.common.collect.Maps;
 
 import java.util.Map;

@@ -1,8 +1,8 @@
-package club.someoneice.scriptblock.util
+package club.someoneice.scriptblock
 
 open class CacheObject(private var obj: Any) {
     fun getObject(): Any {
-        return obj;
+        return obj
     }
 
     fun <E> get(): E? {

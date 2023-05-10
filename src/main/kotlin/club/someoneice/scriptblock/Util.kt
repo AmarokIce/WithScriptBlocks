@@ -1,19 +1,21 @@
-package club.someoneice.scriptblock.util
+package club.someoneice.scriptblock
 
 import com.google.common.collect.Maps
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
+import net.minecraft.item.Item
+import net.minecraft.item.ItemStack
 import java.io.File
 import java.io.FileInputStream
 import java.lang.Exception
 import java.nio.charset.StandardCharsets
 
 private val gson: Gson = GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create()
-val CommandList: HashMap<String, String> = Maps.newHashMap();
+val CommandList: HashMap<String, String> = Maps.newHashMap()
 
 fun readFromJson() {
-    val file = File(System.getProperty("user.dir") + File.separator + "ScriptBlockData")
+    val file = File(System.getProperty("user.dir"), "ScriptBlockData")
     if (!file.isDirectory) {
         file.mkdirs()
         return
@@ -27,37 +29,12 @@ fun readFromJson() {
         inputStream.close()
 
         CommandList[files.nameWithoutExtension] = String(bytes, StandardCharsets.UTF_8)
-
     }
 }
 
-// If the object is a list, return true.
-fun Any.isList() = this is List<*>
-
-// Make String to Json.
-fun <T> String.asList(t: T): T {
-    return gson.fromJson(this, object: TypeToken<T>() {}.type)
-}
-
-// Make String to Json with no type.
-fun String.asJsonWithAny(): Any {
-    return gson.fromJson(this, object: TypeToken<Any>() {}.type)
-}
-
-// Make String(Data in command) to List.
-fun String.asList(): List<String> {
-    return gson.fromJson(this, object: TypeToken<List<String>>() {}.type)
-}
-
-fun String.initDataList(): List<List<String>> {
-    return gson.fromJson(this, object: TypeToken<List<List<String>>>() {}.type)
-}
-
-fun Any.asObject(): CacheObject {
-    return CacheObject(this)
-}
-
-fun Any.json() = gson
-
+fun <T> String.asList(t: T): T = gson.fromJson(this, object: TypeToken<T>() {}.type)
+fun String.asList(): List<String> = gson.fromJson(this, object: TypeToken<List<String>>() {}.type)
+fun Any.asObject(): CacheObject = CacheObject(this)
+fun Item.stack(): ItemStack = ItemStack(this)
 class NotListException(message: String): Exception(message)
 class CannotProcessException(message: String): Exception(message)
