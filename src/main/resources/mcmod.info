@@ -1,0 +1,16 @@
+[
+{
+  "modid": "wolfhouse",
+  "name": "What That? Wolfhouse!",
+  "description": "Organize our warehouse with wolf!",
+  "version": "1.0",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Someoneice"],
+  "credits": "Someoneice",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
