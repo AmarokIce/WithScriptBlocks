@@ -12,7 +12,7 @@ import net.minecraft.util.ChunkCoordinates
 import net.minecraft.world.World
 import java.util.*
 
-open class Handler(val world: World, val pos: ChunkCoordinates, val player: EntityPlayer, oStr: String) {
+open class Handler(private val world: World, private val pos: ChunkCoordinates, private val player: EntityPlayer, oStr: String) {
     /**
      * A magic variable for this pool.
      * */
@@ -25,7 +25,7 @@ open class Handler(val world: World, val pos: ChunkCoordinates, val player: Enti
 
     init {
         cup()
-        for (l in oStr.asList()) handle(l.asList())
+        for (l in oStr.asList()) handle(l as List<Any>)
     }
 
     private fun cup() {
@@ -36,45 +36,45 @@ open class Handler(val world: World, val pos: ChunkCoordinates, val player: Enti
     }
 
     /* Main Handle */
-    private fun handle(list: List<String>) {
-        when (list[0]) {
-            "@Set" -> pool[list[1]] = variable(list[2])
-            "@Del" -> pool.remove(list[1])
+    private fun handle(list: List<Any>) {
+        when (list[0].toString()) {
+            "@Set" -> pool[list[1].toString()] = variable(list[2])
+            "@Del" -> pool.remove(list[1].toString())
             "@If"  -> processIf(list)
-            "@Command" -> commandHandle(list[1])
+            "@Command" -> commandHandle(list as List<String>)
 
-            else -> if(SbInput.INPUT_MAP.isNotEmpty()) SbInput.INPUT_MAP[list[0]]?.getList(list)
+            else -> if(SbInput.INPUT_MAP.isNotEmpty()) SbInput.INPUT_MAP[list[0].toString()]?.getList(list)
         }
-        for (i in list.indices) if (list[i][0] == '[') handle(list[i].asList())
+        for (i in list.indices) if (list[i].toString()[0] == '[') handle(list[i] as List<Any>)
     }
 
-    protected open fun processIf(list: List<String>) {
+    protected open fun processIf(list: List<Any>) {
         val v1 = variable(list[2]).get<String>()
         val v2 = variable(list[3]).get<String>()
 
-        val go = when (list[1]) {
+        val go = when (list[1].toString()) {
             "@Is"    -> v1 == v2
             "@IsNot" -> v1 != v2
 
             else     -> false
         }
 
-        if (go) handle(list[4].asList())
-        else if (list.size > 5) handle(list[5].asList())
+        if (go) handle(list[4] as List<Any>)
+        else if (list.size > 5) handle(list[5] as List<Any>)
     }
 
-    protected open fun variable(str: String): CacheObject
-    = when (str[0]) {
-        '%' -> pool[str.replace("%", "")] ?: throw CannotProcessException("Cannot find ${str.replace("%", "")} in pool!")
-        '[' -> math(str.asList())
-        '&' -> event(str)
+    protected open fun variable(str: Any): CacheObject
+    = when (str.toString()[0]) {
+        '%' -> pool[str.toString().replace("%", "")] ?: throw CannotProcessException("Cannot find ${str.toString().replace("%", "")} in pool!")
+        '[' -> math(str as List<Any>)
+        '&' -> event(str.toString())
 
-        else -> str.asObject()
+        else -> str.toString().asObject()
     }
 
-    protected open fun math(list: List<String>): CacheObject {
-        val v1 = variable(list[1]).get<Double>() ?: throw CannotProcessException("${list[1]} not a number!")
-        val v2 = variable(list[2]).get<Double>() ?: throw CannotProcessException("${list[2]} not a number!")
+    protected open fun math(list: List<Any>): CacheObject {
+        val v1 = (variable(list[1].toString()).get<String>())?.toDouble() ?: throw CannotProcessException("Math get a string but it not a number!")
+        val v2 = (variable(list[2].toString()).get<String>())?.toDouble() ?: throw CannotProcessException("Math get a string but it not a number!")
 
         return when (list[0]) {
             "@Add" -> v1 + v2
@@ -83,7 +83,7 @@ open class Handler(val world: World, val pos: ChunkCoordinates, val player: Enti
             "@Exc" -> v1 / v2
 
             else -> v1 + v2
-        }.asObject()
+        }.toString().asObject()
     }
 
 
@@ -105,7 +105,7 @@ open class Handler(val world: World, val pos: ChunkCoordinates, val player: Enti
      * - First check all variables in command's String
      * - Then lets us run the command.
      * */
-    protected open fun commandHandle(command: String) {
+    protected open fun commandHandle(command: List<String>) {
         // Server only!
         if (world.isRemote) return
 
@@ -133,25 +133,23 @@ open class Handler(val world: World, val pos: ChunkCoordinates, val player: Enti
             }
         }
 
-        var cmd = command
-        /**
-         * Replace from MagicMap.
-         * */
-        if (command.contains('%')) {
-            for (i in MAGIC_MAP.keys) {
-                if (!cmd.contains('%')) break
-                cmd =  cmd.replace(i, MAGIC_MAP[i]!!)
-            }
-        }
+        var cmd = ""
 
-        /**
-         * Replace from pool.
-         * */
-        if (command.contains('%')) {
-            for (i in pool.keys) {
-                if (!cmd.contains('%')) break
-                cmd =  cmd.replace("%$i", pool[i]!!.get<String>()!!)
+        for (i in command) {
+            if (i[0] == '@') continue
+            if (i[0] == '%') {
+                if (MAGIC_MAP.containsKey(i)) {
+                    cmd += "${MAGIC_MAP[i]} "
+                    continue
+                }
+
+                if (pool.containsKey(i.replace("%", ""))) {
+                    cmd += "${pool[i.replace("%", "")]!!.get<Any>().toString()} "
+                    continue
+                }
             }
+
+            cmd += "$i "
         }
 
         MinecraftServer.getServer().commandManager.executeCommand(sender, cmd)

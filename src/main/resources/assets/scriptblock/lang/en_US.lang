@@ -1,1 +1,10 @@
-tile.warehouse_manager_block.name=Warehouse Manager
+scb.clean.message=If there is a script block nearby, it will expose him.
+item.clean_item.name=Broom Of Void
+item.copy_page.name=Chapter Of Void
+item.recording_page.name=Chapter Of Record
+item.sound_harmony.name=Sound Of Harmony
+
+scb.sh.walk=Now event is walk on!
+scb.sh.click=Now event is click on!
+scb.sh.both=Now event is both on!
+scb.sh.none=Now close the event!

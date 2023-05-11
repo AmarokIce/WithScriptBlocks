@@ -4,23 +4,21 @@ import club.someoneice.scriptblock.block.ScriptBlockTile
 import club.someoneice.scriptblock.init.ItemBase
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
-import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.world.World
 
-class RecordingPage: ItemBase("recording_page") {
+class CleanItem: ItemBase("clean_item") {
     override fun onItemUse(item: ItemStack, player: EntityPlayer, world: World, x: Int, y: Int, z: Int, face: Int, fx: Float, fy: Float, fz: Float): Boolean {
         if (world.isRemote) return false;
-
-        val tile = world.getTileEntity(x, y, z)
-        if (item.tagCompound == null) item.tagCompound = NBTTagCompound()
-        if (tile is ScriptBlockTile && item.tagCompound.hasKey("command")) {
-            tile.command = item.tagCompound.getString("command")
-            tile.markDirty()
+        for (py in y-1 .. y+1) for (px in x-1 .. x+1) for (pz in z-1 .. z+1) {
+            val tile = world.getTileEntity(px, py, pz)
+            if (tile is ScriptBlockTile)
+                tile.blockName = null
         }
-        return true;
+
+        return true
     }
 
     override fun addInformation(item: ItemStack, player: EntityPlayer?, list: List<Any?>, boolean: Boolean) {
-        // if (item.tagCompound.hasKey("command")) list.add("Command: ${item.tagCompound.getString("command")}")
+        // list.add(ChatComponentTranslation("scb.clean.message"))
     }
 }

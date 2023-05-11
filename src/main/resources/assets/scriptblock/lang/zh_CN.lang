@@ -1,1 +1,10 @@
-tile.warehouse_manager_block.name=仓库管理员
+scb.clean.message=如果脚本方块在附近，那么会让他显形。
+item.clean_item.name=虚空之帚
+item.copy_page.name=记录之章
+item.recording_page.name=虚空之章
+item.sound_harmony.name=和谐之声
+
+scb.sh.walk=现在是踩踏触发!
+scb.sh.click=现在是使用触发!
+scb.sh.both=现在是混合触发!
+scb.sh.none=现在关闭方块!

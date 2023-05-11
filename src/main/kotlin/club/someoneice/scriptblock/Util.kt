@@ -4,11 +4,12 @@ import com.google.common.collect.Maps
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
+import cpw.mods.fml.common.registry.GameRegistry
+import net.minecraft.block.Block
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import java.io.File
 import java.io.FileInputStream
-import java.lang.Exception
 import java.nio.charset.StandardCharsets
 
 private val gson: Gson = GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create()
@@ -32,9 +33,13 @@ fun readFromJson() {
     }
 }
 
-fun <T> String.asList(t: T): T = gson.fromJson(this, object: TypeToken<T>() {}.type)
-fun String.asList(): List<String> = gson.fromJson(this, object: TypeToken<List<String>>() {}.type)
+fun Any.isList(): Boolean = this is List<*>
+fun <E> String.asList(): E = gson.fromJson(this, object: TypeToken<E>() {}.type)
+fun String.asList(): List<Any> = gson.fromJson(this, object: TypeToken<List<Any>>() {}.type)
 fun Any.asObject(): CacheObject = CacheObject(this)
-fun Item.stack(): ItemStack = ItemStack(this)
+fun Item.stack(size: Int = 1): ItemStack = ItemStack(this, size)
+fun Item.getRegisterName(): String = GameRegistry.findUniqueIdentifierFor(this).toString()
+fun Block.getRegisterName(): String = GameRegistry.findUniqueIdentifierFor(this).toString()
+
 class NotListException(message: String): Exception(message)
 class CannotProcessException(message: String): Exception(message)
