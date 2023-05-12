@@ -4,14 +4,14 @@ import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.tileentity.TileEntity
 
 class ScriptBlockTile : TileEntity() {
-    var blockName: String?
+    var blockName: Int
     var command: String?
     var isWalkingEventOn: Boolean
     var isRightClickEventOn: Boolean
     var event: Int
 
     init {
-        blockName = null
+        blockName = 0
         command = null
         isWalkingEventOn = false
         isRightClickEventOn = false
@@ -23,7 +23,7 @@ class ScriptBlockTile : TileEntity() {
     override fun writeToNBT(nbt: NBTTagCompound) {
         super.writeToNBT(nbt)
 
-        nbt.setString("icon_block_name", blockName)
+        nbt.setInteger("icon_block_name", blockName)
         nbt.setString("command", command)
         nbt.setInteger("event", event)
     }
@@ -31,7 +31,7 @@ class ScriptBlockTile : TileEntity() {
     override fun readFromNBT(nbt: NBTTagCompound) {
         super.readFromNBT(nbt)
 
-        blockName           = nbt.getString("icon_block_name")
+        blockName           = nbt.getInteger("icon_block_name")
         command             = nbt.getString("command")
         event               = nbt.getInteger("event")
         this.markDirty()

@@ -8,6 +8,7 @@ import cpw.mods.fml.common.registry.GameRegistry
 import net.minecraft.block.Block
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
+import net.shadew.json.Json
 import java.io.File
 import java.io.FileInputStream
 import java.nio.charset.StandardCharsets
@@ -24,12 +25,19 @@ fun readFromJson() {
 
     for (files in file.listFiles()!!) {
         if (!files.isFile) continue
-        val bytes = ByteArray(files.length().toInt())
-        val inputStream = FileInputStream(files)
-        inputStream.read(bytes)
-        inputStream.close()
 
-        CommandList[files.nameWithoutExtension] = String(bytes, StandardCharsets.UTF_8)
+        val type = file.name.substring(file.name.indexOf("."))
+        if (type == ".json") {
+            val bytes = ByteArray(files.length().toInt())
+            val inputStream = FileInputStream(files)
+            inputStream.read(bytes)
+            inputStream.close()
+
+            CommandList[files.nameWithoutExtension] = String(bytes, StandardCharsets.UTF_8)
+        } else if (ScriptBlockMain.IS_PINEAPPLE_INSTALL && type == ".json5") {
+            val json: Json = Json.json5()
+            CommandList[files.nameWithoutExtension] = json.parse(files).asString()
+        }
     }
 }
 

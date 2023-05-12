@@ -22,8 +22,7 @@ class CommandScript : CommandBase() {
         val player = getPlayer(sender, sender.commandSenderName)
         when (list[0]) {
             "reload"    -> readFromJson()
-            "setRaw"    -> setCommandInPaper(player, list[1], true)
-            "set"       -> setCommandInPaper(player, list[1], false)
+            "set"       -> setCommandInPaper(player, list[1])
             "block"     -> player.inventory.addItemStackToInventory(BlockInit.SCRIPT_BLOCK.toItem()?.stack())
         }
     }
@@ -31,24 +30,23 @@ class CommandScript : CommandBase() {
     override fun getCommandAliases(): List<String> {
         val list = Lists.newArrayList<String>()
         list.add("scb")
-        list.add("sb")
+        list.add("sc")
         return list
     }
 
     override fun addTabCompletionOptions(sender: ICommandSender, array: Array<String>): List<String> {
         val list = Lists.newArrayList<String>()
         list.add("reload")
-        list.add("setRaw")
         list.add("set")
         list.add("block")
 
         return list
     }
 
-    private fun setCommandInPaper(player: EntityPlayer, command: String, raw: Boolean) {
+    private fun setCommandInPaper(player: EntityPlayer, command: String) {
         val item = ItemInit.RECORDING_PAGE.stack()
         item.tagCompound = NBTTagCompound()
-        item.tagCompound.setString("command", if (raw) command else CommandList[command] ?: return)
+        item.tagCompound.setString("command", command)
         player.inventory.addItemStackToInventory(item)
     }
 }

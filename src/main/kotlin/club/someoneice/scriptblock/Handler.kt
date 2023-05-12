@@ -24,8 +24,12 @@ open class Handler(private val world: World, private val pos: ChunkCoordinates, 
     private val pool: HashMap<String, CacheObject> = Maps.newHashMap()
 
     init {
-        cup()
-        for (l in oStr.asList()) handle(l as List<Any>)
+        try {
+            cup()
+            for (l in oStr.asList()) handle(l as List<Any>)
+        } catch (e: CannotProcessException) {
+            e.printStackTrace()
+        }
     }
 
     private fun cup() {
@@ -52,11 +56,23 @@ open class Handler(private val world: World, private val pos: ChunkCoordinates, 
         val v1 = variable(list[2]).get<String>()
         val v2 = variable(list[3]).get<String>()
 
-        val go = when (list[1].toString()) {
+        var go = when (list[1].toString()) {
             "@Is"    -> v1 == v2
             "@IsNot" -> v1 != v2
 
             else     -> false
+        }
+
+        if (!go) {
+            v1?.toDouble() ?: throw CannotProcessException("$v1 not a number!")
+            v2?.toDouble() ?: throw CannotProcessException("$v2 not a number!")
+
+            go = when (list[1].toString()) {
+                "@Greater"  -> v1 > v2
+                "@Less"     -> v1 < v2
+
+                else        -> false
+            }
         }
 
         if (go) handle(list[4] as List<Any>)

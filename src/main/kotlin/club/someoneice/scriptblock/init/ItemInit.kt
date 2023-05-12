@@ -8,4 +8,6 @@ object ItemInit {
     val COPY_PAGE       = CopyPage()
     val SOUND_HARMONY   = SoundHarmony()
     val SKIN_TOOL       = SkinSetter()
+    val SEE_EYE         = SeeingEye()
+    val BLOCK_HEART     = BlockHeart()
 }

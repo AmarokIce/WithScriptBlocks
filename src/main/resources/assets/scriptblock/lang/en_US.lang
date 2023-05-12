@@ -1,8 +1,12 @@
-scb.clean.message=If there is a script block nearby, it will expose him.
+tile.scriptblock.name=Script Block
+
 item.clean_item.name=Broom Of Void
 item.copy_page.name=Chapter Of Void
 item.recording_page.name=Chapter Of Record
 item.sound_harmony.name=Sound Of Harmony
+item.skin_setter.name=Touch Of Paint
+item.heart_block.name=Heart Of Block
+item.see_eye.name=Snoop Of Eye
 
 scb.sh.walk=Now event is walk on!
 scb.sh.click=Now event is click on!

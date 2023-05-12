@@ -1,1 +1,14 @@
-scb.clean.message=If there is a script block nearby, it will expose him.
+tile.scriptblock.name=腳本方塊
+
+item.clean_item.name=虛空之帚
+item.copy_page.name=記錄之章
+item.recording_page.name=虛空之章
+item.sound_harmony.name=和諧之聲
+item.skin_setter.name=繪作之觸
+item.heart_block.name=方塊之心
+item.see_eye.name=窺探之眼
+
+scb.sh.walk=現在是踩踏時觸發！
+scb.sh.click=現在是右擊時觸發!
+scb.sh.both=現在是混合模式觸發!
+scb.sh.none=現在關閉觸發模式！

@@ -4,6 +4,7 @@ import alexsocol.patcher.KotlinAdapter
 import club.someoneice.scriptblock.block.ScriptBlockTile
 import club.someoneice.scriptblock.init.BlockInit
 import club.someoneice.scriptblock.init.ItemInit
+import cpw.mods.fml.common.Loader
 import cpw.mods.fml.common.Mod
 import cpw.mods.fml.common.event.FMLInitializationEvent
 import cpw.mods.fml.common.event.FMLServerStartingEvent
@@ -18,6 +19,8 @@ class ScriptBlockMain {
         const val VERSION = "1.0"
 
         val LOGGER: Logger = LogManager.getLogger(MODID)
+
+        val IS_PINEAPPLE_INSTALL = Loader.isModLoaded("pineapple_psychic")
     }
 
     @Mod.EventHandler

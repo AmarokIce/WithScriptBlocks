@@ -8,11 +8,13 @@ import net.minecraft.world.World
 
 class CleanItem: ItemBase("clean_item") {
     override fun onItemUse(item: ItemStack, player: EntityPlayer, world: World, x: Int, y: Int, z: Int, face: Int, fx: Float, fy: Float, fz: Float): Boolean {
-        if (world.isRemote) return false;
+        if (world.isRemote) return false
         for (py in y-1 .. y+1) for (px in x-1 .. x+1) for (pz in z-1 .. z+1) {
             val tile = world.getTileEntity(px, py, pz)
-            if (tile is ScriptBlockTile)
-                tile.blockName = null
+            if (tile is ScriptBlockTile) {
+                tile.blockName = 0
+                world.markBlockForUpdate(px, py, pz)
+            }
         }
 
         return true
