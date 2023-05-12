@@ -9,7 +9,7 @@
 > * <a href="#item">     Item   </a>
 > * <a href="#license">  License </a>
 
-## 简述 <a id="start"></a>
+## Briefly <a id="start"></a>
 Script Block is a mod for minecraft 1.7.10. Provides a script block that can be executed in a specific situation, as well as a set of tools. </br >
 Make a new dir named `ScriptBlockData` and put all of your json (or json 5) in it. If you would like use Json5, you should a Lib `With Pineapple Psychic`, or all of Json5 file will skip. The text see *Norms*
 
