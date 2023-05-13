@@ -1,4 +1,4 @@
-![](img/title.png)
+![](img/Title.png)
 
 | >English< | [简体中文](README_CN.md) | [臺灣正體](README_TW.md) |  <br /><br />
 
@@ -21,7 +21,8 @@ The primary name and other name are same command.<br />
 **parameters**<br />
 reload - Reload from dir.<br />
 set [File Name] - Set a script from the name of file into a Chapter Of Record.<br />
-block - Get a Script Block.
+block - Get a Script Block.<br />
+run &lt;Player Name> [File Name] - Run a script to a player.
 
 ## Norms <a id="main"></a>
 Script parsing relies on a stricter specification, which look like an interpreted language with strict specifications.<br />
@@ -42,6 +43,8 @@ When this script is triggered, it will send "Hello World!" to the server's playe
 <br />
 
 **@Set**<br />
+
+Other name：@SetVar <br />
 
 The keyword takes "@Set" should two parameters, like this:
 ```json

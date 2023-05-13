@@ -19,6 +19,11 @@ open class Handler(private val world: World, private val pos: ChunkCoordinates, 
     val MAGIC_MAP: HashMap<String, String> = Maps.newHashMap()
 
     /**
+     * Data for api.
+     * */
+    val data: DataSBapi = DataSBapi(world, player, pos)
+
+    /**
      * The pool for storage variable.
      * */
     private val pool: HashMap<String, CacheObject> = Maps.newHashMap()
@@ -42,12 +47,12 @@ open class Handler(private val world: World, private val pos: ChunkCoordinates, 
     /* Main Handle */
     private fun handle(list: List<Any>) {
         when (list[0].toString()) {
-            "@Set" -> pool[list[1].toString()] = variable(list[2])
+            "@Set", "@SetVar" -> pool[list[1].toString()] = variable(list[2])
             "@Del" -> pool.remove(list[1].toString())
             "@If"  -> processIf(list)
             "@Command" -> commandHandle(list as List<String>)
 
-            else -> if(SbInput.INPUT_MAP.isNotEmpty()) SbInput.INPUT_MAP[list[0].toString()]?.getList(list)
+            else -> if(SbInput.INPUT_MAP.isNotEmpty()) SbInput.INPUT_MAP[list[0].toString()]?.getList(list, pool, data)
         }
         for (i in list.indices) if (list[i].toString()[0] == '[') handle(list[i] as List<Any>)
     }

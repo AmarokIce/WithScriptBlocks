@@ -8,6 +8,7 @@ import net.minecraft.command.CommandBase
 import net.minecraft.command.ICommandSender
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.util.ChunkCoordinates
 
 class CommandScript : CommandBase() {
     override fun getCommandName(): String {
@@ -24,6 +25,11 @@ class CommandScript : CommandBase() {
             "reload"    -> readFromJson()
             "set"       -> setCommandInPaper(player, list[1])
             "block"     -> player.inventory.addItemStackToInventory(BlockInit.SCRIPT_BLOCK.toItem()?.stack())
+            "run"       -> {
+                val mPlayer = getPlayer(sender, list[1])
+                val pos = ChunkCoordinates(player.posX.toInt(), player.posY.toInt(), player.posZ.toInt())
+                Handler(player.worldObj, pos, mPlayer, CommandList[list[2]] ?: return)
+            }
         }
     }
 
